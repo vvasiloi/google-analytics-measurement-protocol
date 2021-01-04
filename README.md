@@ -6,6 +6,9 @@
 [![Build Status][ico-github-actions]][link-github-actions]
 [![Code Coverage][ico-code-coverage]][link-code-coverage]
 
+The `ga4` has classes ready for the GA4 measurement protocol. However, as that protocol is still in alpha, we have parked
+the development for that at the moment.
+
 ## Installation
 
 ```bash
