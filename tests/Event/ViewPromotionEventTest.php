@@ -4,14 +4,30 @@ declare(strict_types=1);
 
 namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
 
-use PHPUnit\Framework\TestCase;
-
-final class ViewPromotionEventTest extends TestCase
+final class ViewPromotionEventTest extends EventTestCase
 {
     /**
      * @test
+     * @dataProvider exampleEventProvider
      */
-    public function it_returns_array(): void
+    public function it_returns_array(EventInterface $event): void
+    {
+        self::assertSame([
+            'name' => 'view_promotion',
+            'params' => ['location_id' => 'L_12345', 'items' => [['item_id' => 'SKU_12345']]],
+        ], $event->toArray());
+    }
+
+    /**
+     * @test
+     * @dataProvider exampleEventProvider
+     */
+    public function it_yields_a_valid_request(EventInterface $event): void
+    {
+        $this->assertValidRequest($event);
+    }
+
+    public function exampleEventProvider(): iterable
     {
         $event = new ViewPromotionEvent();
         $event->parameters->locationId = 'L_12345';
@@ -21,9 +37,6 @@ final class ViewPromotionEventTest extends TestCase
 
         $event->parameters->addItem($item);
 
-        self::assertSame([
-            'name' => 'view_promotion',
-            'params' => ['location_id' => 'L_12345', 'items' => [['item_id' => 'SKU_12345']]],
-        ], $event->toArray());
+        return [[$event]];
     }
 }

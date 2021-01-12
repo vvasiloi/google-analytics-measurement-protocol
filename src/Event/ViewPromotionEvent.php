@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class ViewPromotionEvent extends Event
 {
-    /** This event signifies an promotion was viewed from a list. */
-    protected string $name = 'view_promotion';
+    /**
+     * @var string
+     * This event signifies an promotion was viewed from a list.
+     */
+    protected $name = 'view_promotion';
 
     public function __construct()
     {

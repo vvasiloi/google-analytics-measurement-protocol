@@ -6,10 +6,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
 
 class Aggregate
 {
-    public string $clientId;
+    /** @var string */
+    public $clientId;
 
-    /** @var array&EventInterface[] */
-    public array $events;
+    /** @var EventInterface[] */
+    public $events;
 
     public function __construct(string $clientId, EventInterface ...$events)
     {
@@ -34,7 +35,7 @@ class Aggregate
 
     public function toArray(): array
     {
-        $events = array_map(static function (EventInterface $event) {
+        $events = array_map(static function (EventInterface $event): array {
             return $event->toArray();
         }, $this->events);
 

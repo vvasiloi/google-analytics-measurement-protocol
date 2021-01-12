@@ -7,9 +7,10 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
 final class SearchEventParameters extends EventParameters
 {
     /**
+     * @var string
      * The term that was searched for.
      * Required: Yes
      * Example: t-shirts
      */
-    public string $searchTerm;
+    public $searchTerm;
 }

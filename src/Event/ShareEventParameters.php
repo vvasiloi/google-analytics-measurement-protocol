@@ -7,23 +7,26 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
 final class ShareEventParameters extends EventParameters
 {
     /**
+     * @var string
      * The method in which the content is shared.
      * Required: No
      * Example: Twitter
      */
-    public string $method;
+    public $method;
 
     /**
+     * @var string
      * The type of shared content.
      * Required: No
      * Example: image
      */
-    public string $contentType;
+    public $contentType;
 
     /**
+     * @var string
      * The ID of the shared content.
      * Required: No
      * Example: C_12345
      */
-    public string $contentId;
+    public $contentId;
 }

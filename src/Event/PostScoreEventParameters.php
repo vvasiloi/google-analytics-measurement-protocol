@@ -7,23 +7,26 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
 final class PostScoreEventParameters extends EventParameters
 {
     /**
+     * @var int
      * The score to post.
      * Required: Yes
      * Example: 10000
      */
-    public int $score;
+    public $score;
 
     /**
+     * @var int
      * The level for the score.
      * Required: No
      * Example: 5
      */
-    public int $level;
+    public $level;
 
     /**
+     * @var string
      * The character that achieved the score.
      * Required: No
      * Example: Player 1
      */
-    public string $character;
+    public $character;
 }

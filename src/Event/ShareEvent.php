@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class ShareEvent extends Event
 {
-    /** Use this event to identify viral content. */
-    protected string $name = 'share';
+    /**
+     * @var string
+     * Use this event to identify viral content.
+     */
+    protected $name = 'share';
 
     public function __construct()
     {

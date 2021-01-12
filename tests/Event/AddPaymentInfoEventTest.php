@@ -4,14 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Uri;
-use GuzzleHttp\Psr7\Utils as Psr7Utils;
-use GuzzleHttp\Utils;
-use PHPUnit\Framework\TestCase;
-
-final class AddPaymentInfoEventTest extends TestCase
+final class AddPaymentInfoEventTest extends EventTestCase
 {
     /**
      * @test
@@ -37,25 +30,7 @@ final class AddPaymentInfoEventTest extends TestCase
      */
     public function it_yields_a_valid_request(EventInterface $event): void
     {
-        $aggregate = new Aggregate('XXXXXXXXXX.YYYYYYYYYY', $event);
-
-        $uri = Uri::withQueryValues(
-            new Uri('https://www.google-analytics.com/debug/mp/collect'),
-            ['api_secret' => '<secret_value>', 'measurement_id' => 'G-XXXXXXXXXX']
-        );
-
-        $request = (new Request('POST', $uri))
-            ->withBody(Psr7Utils::streamFor(Utils::jsonEncode($aggregate->toArray())))
-        ;
-
-        $client = new Client();
-        $response = $client->sendRequest($request);
-        $statusCode = $response->getStatusCode();
-        $contents = $response->getBody()->getContents();
-        $data = Utils::jsonDecode($contents, true);
-
-        self::assertEquals(200, $statusCode);
-        self::assertEquals(['validationMessages' => []], $data, sprintf("Unexpected validation issues:\n %s", $contents));
+        $this->assertValidRequest($event);
     }
 
     public function exampleEventProvider(): iterable

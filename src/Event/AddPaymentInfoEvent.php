@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class AddPaymentInfoEvent extends Event
 {
-    /** This event signifies a user has submitted their payment information. */
-    protected string $name = 'add_payment_info';
+    /**
+     * @var string
+     * This event signifies a user has submitted their payment information.
+     */
+    protected $name = 'add_payment_info';
 
     public function __construct()
     {

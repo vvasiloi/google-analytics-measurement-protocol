@@ -4,14 +4,30 @@ declare(strict_types=1);
 
 namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
 
-use PHPUnit\Framework\TestCase;
-
-final class AddToWishlistEventTest extends TestCase
+final class AddToWishlistEventTest extends EventTestCase
 {
     /**
      * @test
+     * @dataProvider exampleEventProvider
      */
-    public function it_returns_array(): void
+    public function it_returns_array(EventInterface $event): void
+    {
+        self::assertSame([
+            'name' => 'add_to_wishlist',
+            'params' => ['currency' => 'USD', 'value' => 7.77, 'items' => [['item_id' => 'SKU_12345']]],
+        ], $event->toArray());
+    }
+
+    /**
+     * @test
+     * @dataProvider exampleEventProvider
+     */
+    public function it_yields_a_valid_request(EventInterface $event): void
+    {
+        $this->assertValidRequest($event);
+    }
+
+    public function exampleEventProvider(): iterable
     {
         $event = new AddToWishlistEvent();
         $event->parameters->currency = 'USD';
@@ -22,9 +38,6 @@ final class AddToWishlistEventTest extends TestCase
 
         $event->parameters->addItem($item);
 
-        self::assertSame([
-            'name' => 'add_to_wishlist',
-            'params' => ['currency' => 'USD', 'value' => 7.77, 'items' => [['item_id' => 'SKU_12345']]],
-        ], $event->toArray());
+        return [[$event]];
     }
 }

@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class UnlockAchievementEvent extends Event
 {
-    /** Log this event when the user has unlocked an achievement. This event can help you understand how users are experiencing your game. */
-    protected string $name = 'unlock_achievement';
+    /**
+     * @var string
+     * Log this event when the user has unlocked an achievement. This event can help you understand how users are experiencing your game.
+     */
+    protected $name = 'unlock_achievement';
 
     public function __construct()
     {

@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class SpendVirtualCurrencyEvent extends Event
 {
-    /** This event measures the sale of virtual goods in your app and helps you identify which virtual goods are the most popular. */
-    protected string $name = 'spend_virtual_currency';
+    /**
+     * @var string
+     * This event measures the sale of virtual goods in your app and helps you identify which virtual goods are the most popular.
+     */
+    protected $name = 'spend_virtual_currency';
 
     public function __construct()
     {

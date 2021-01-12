@@ -9,30 +9,34 @@ final class AddPaymentInfoEventParameters extends EventParameters implements Ite
     use ItemsAwareEventParametersTrait;
 
     /**
+     * @var string
      * Coupon code used for a purchase.
      * Required: No
      * Example: SUMMER_FUN
      */
-    public string $coupon;
+    public $coupon;
 
     /**
+     * @var string
      * Currency of the purchase or items associated with the event, in 3-letter ISO 4217 format.
      * Required: No
      * Example: USD
      */
-    public string $currency;
+    public $currency;
 
     /**
+     * @var string
      * The chosen method of payment.
      * Required: No
      * Example: Credit Card
      */
-    public string $paymentType;
+    public $paymentType;
 
     /**
+     * @var float
      * The monetary value of the event.
      * Required: No
      * Example: 7.77
      */
-    public float $value;
+    public $value;
 }

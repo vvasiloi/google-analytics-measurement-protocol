@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class RemoveFromCartEvent extends Event
 {
-    /** This event signifies that an item was removed from a cart. */
-    protected string $name = 'remove_from_cart';
+    /**
+     * @var string
+     * This event signifies that an item was removed from a cart.
+     */
+    protected $name = 'remove_from_cart';
 
     public function __construct()
     {

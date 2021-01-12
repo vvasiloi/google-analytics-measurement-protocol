@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class LoginEvent extends Event
 {
-    /** Send this event to signify that a user has logged in. */
-    protected string $name = 'login';
+    /**
+     * @var string
+     * Send this event to signify that a user has logged in.
+     */
+    protected $name = 'login';
 
     public function __construct()
     {

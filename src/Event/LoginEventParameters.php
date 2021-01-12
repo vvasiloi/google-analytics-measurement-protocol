@@ -7,9 +7,10 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
 final class LoginEventParameters extends EventParameters
 {
     /**
+     * @var string
      * The method used to login.
      * Required: No
      * Example: Google
      */
-    public string $method;
+    public $method;
 }

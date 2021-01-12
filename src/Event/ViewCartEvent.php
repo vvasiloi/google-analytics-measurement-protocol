@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class ViewCartEvent extends Event
 {
-    /** This event signifies that a user viewed their cart. */
-    protected string $name = 'view_cart';
+    /**
+     * @var string
+     * This event signifies that a user viewed their cart.
+     */
+    protected $name = 'view_cart';
 
     public function __construct()
     {

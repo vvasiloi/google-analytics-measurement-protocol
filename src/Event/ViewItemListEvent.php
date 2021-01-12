@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class ViewItemListEvent extends Event
 {
-    /** Log this event when the user has been presented with a list of items of a certain category. */
-    protected string $name = 'view_item_list';
+    /**
+     * @var string
+     * Log this event when the user has been presented with a list of items of a certain category.
+     */
+    protected $name = 'view_item_list';
 
     public function __construct()
     {

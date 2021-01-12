@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class PostScoreEvent extends Event
 {
-    /** Send this event when the user posts a score. Use this event to understand how users are performing in your game and correlate high scores with audiences or behaviors. */
-    protected string $name = 'post_score';
+    /**
+     * @var string
+     * Send this event when the user posts a score. Use this event to understand how users are performing in your game and correlate high scores with audiences or behaviors.
+     */
+    protected $name = 'post_score';
 
     public function __construct()
     {

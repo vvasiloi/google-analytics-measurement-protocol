@@ -3,13 +3,14 @@
 declare(strict_types=1);
 
 use Goutte\Client;
-use PHPUnit\Framework\TestCase;
+use Nette\PhpGenerator\Dumper;
 use Nette\PhpGenerator\Literal;
 use Nette\PhpGenerator\PhpFile;
 use Nette\Utils\FileSystem;
 use Setono\GoogleAnalyticsMeasurementProtocol\Event\Event;
 use Setono\GoogleAnalyticsMeasurementProtocol\Event\EventInterface;
 use Setono\GoogleAnalyticsMeasurementProtocol\Event\EventParameters;
+use Setono\GoogleAnalyticsMeasurementProtocol\Event\EventTestCase;
 use Setono\GoogleAnalyticsMeasurementProtocol\Event\ItemsAwareEventParametersInterface;
 use Setono\GoogleAnalyticsMeasurementProtocol\Event\ItemsAwareEventParametersTrait;
 use Symfony\Component\DomCrawler\Crawler;
@@ -39,11 +40,17 @@ foreach ($events as $event) {
 
 function get_events(): array
 {
+    $cacheFilename = 'bin/events.php';
+
+    if (file_exists($cacheFilename)) {
+        return require $cacheFilename;
+    }
+
     $url = 'https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events';
     $client = new Client();
     $crawler = $client->request('GET', $url);
 
-    return $crawler
+    $events = $crawler
         ->filter('h2')
         ->each(function (Crawler $node) {
             $name = $node->attr('data-text');
@@ -66,6 +73,11 @@ function get_events(): array
 
             return compact('name', 'description', 'params');
         });
+
+    $dumper = new Dumper();
+    file_put_contents($cacheFilename, sprintf("<?php\n\nreturn %s;\n", $dumper->dump($events)));
+
+    return $events;
 }
 
 function generate_event_class(array $event, string $className, string $namespaceName, string $dir): void
@@ -80,8 +92,9 @@ function generate_event_class(array $event, string $className, string $namespace
 
     $nameProperty = $class->addProperty('name', $event['name']);
     $nameProperty->setProtected();
-    $nameProperty->setType('string');
-    $nameProperty->setComment($event['description']);
+//    $nameProperty->setType('string');
+    $nameProperty->addComment('@var string');
+    $nameProperty->addComment($event['description']);
 
     if (isset($event['params'])) {
         $paramsClassName = sprintf('%sParameters', $className);
@@ -112,7 +125,8 @@ function generate_event_parameters_class(array $event, string $className, string
         } else {
             $property = $class->addProperty((new UnicodeString($param['0']))->camel()->toString());
             $property->setPublic();
-            $property->setType(get_type($param));
+//            $property->setType(get_type($param));
+            $property->addComment(sprintf('@var %s', get_type($param)));
             $property->addComment($param[4]);
             $property->addComment(sprintf('Required: %s', $param[2]));
             $property->addComment(sprintf('Example: %s', $param[3]));
@@ -129,20 +143,32 @@ function generate_event_test_class(array $event, string $eventClassName, string 
     $file = new PhpFile();
     $file->setStrictTypes();
     $namespace = $file->addNamespace($namespaceName);
-    $namespace->addUse(TestCase::class);
 
     $class = $namespace->addClass($testClassName);
     $class->setFinal(true);
-    $class->addExtend(TestCase::class);
+    $class->addExtend(EventTestCase::class);
 
-    $method = $class->addMethod('it_returns_array');
-    $method->addComment('@test');
-    $method->setReturnType('void');
+    $arrayTestMethod = $class->addMethod('it_returns_array');
+    $arrayTestMethod->addComment('@test');
+    $arrayTestMethod->addComment('@dataProvider exampleEventProvider');
+    $arrayTestMethod->setReturnType('void');
+    $eventParam = $arrayTestMethod->addParameter('event');
+    $eventParam->setType(EventInterface::class);
+
+    $requestTestMethod = $class->addMethod('it_yields_a_valid_request');
+    $requestTestMethod->addComment('@test');
+    $requestTestMethod->addComment('@dataProvider exampleEventProvider');
+    $requestTestMethod->setReturnType('void');
+    $requestTestMethod->setParameters([$eventParam]);
+    $requestTestMethod->setBody('$this->assertValidRequest($event);');
+
+    $providerMethod = $class->addMethod('exampleEventProvider');
+    $providerMethod->setReturnType('iterable');
+    $providerMethod->addBody("\$event = new ?();", [new Literal($eventClassName)]);
 
     $assert = [
         'name' => $event['name'],
     ];
-    $paramsCodeFragment = '';
     $itemsCodeFragment = '';
     $dumper = new Nette\PhpGenerator\Dumper;
 
@@ -155,7 +181,7 @@ function generate_event_test_class(array $event, string $eventClassName, string 
             if ($propertyName === 'items') {
                 $itemsCodeFragment = $dumper->format("\$item = new GenericItemEventParameters();\n") .
                     $dumper->format("\$item->itemId = ?;\n\n", 'SKU_12345') .
-                    $dumper->format("\$event->parameters->addItem(\$item);\n\n");
+                    $dumper->format("\$event->parameters->addItem(\$item);\n");
 
                 continue;
             }
@@ -168,23 +194,17 @@ function generate_event_test_class(array $event, string $eventClassName, string 
                 $assert['params'][$param[0]] = $param[3];
             }
 
-            $paramsCodeFragment .= $dumper->format("\$event->parameters->? = ?;\n", $propertyName, $assert['params'][$param[0]]);
+            $providerMethod->addBody("\$event->parameters->? = ?;", [$propertyName, $assert['params'][$param[0]]]);
         }
 
-        $paramsCodeFragment .= "\n";
-
         if ($itemsCodeFragment !== '') {
+            $providerMethod->addBody("\n$itemsCodeFragment");
             $assert['params']['items'] = [['item_id' => 'SKU_12345']];
         }
     }
 
-
-    $bodyCode = $dumper->format("\$event = new ?();\n", new Literal($eventClassName)) .
-        $paramsCodeFragment .
-        $itemsCodeFragment .
-        $dumper->format('self::assertSame(?, $event->toArray());', new Literal($dumper->dump($assert, 10)));
-
-    $method->setBody($bodyCode);
+    $arrayTestMethod->setBody('self::assertSame(?, $event->toArray());', [new Literal($dumper->dump($assert, 10))]);
+    $providerMethod->addBody('return [[$event]];');
 
     write_file($dir, $testClassName, $file);
 }

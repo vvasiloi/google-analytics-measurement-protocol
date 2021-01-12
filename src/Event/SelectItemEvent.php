@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class SelectItemEvent extends Event
 {
-    /** This event signifies an item was selected from a list. */
-    protected string $name = 'select_item';
+    /**
+     * @var string
+     * This event signifies an item was selected from a list.
+     */
+    protected $name = 'select_item';
 
     public function __construct()
     {

@@ -9,9 +9,10 @@ final class SelectPromotionEventParameters extends EventParameters implements It
     use ItemsAwareEventParametersTrait;
 
     /**
+     * @var string
      * The ID of the location.
      * Required: No
      * Example: L_12345
      */
-    public string $locationId;
+    public $locationId;
 }

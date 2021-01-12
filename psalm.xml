@@ -15,7 +15,6 @@
     <issueHandlers>
         <PropertyNotSetInConstructor>
             <errorLevel type="suppress">
-                <directory name="src/Builder"/>
                 <directory name="src/Event"/>
             </errorLevel>
         </PropertyNotSetInConstructor>

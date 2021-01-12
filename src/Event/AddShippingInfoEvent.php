@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class AddShippingInfoEvent extends Event
 {
-    /** This event signifies a user has submitted their shipping information. */
-    protected string $name = 'add_shipping_info';
+    /**
+     * @var string
+     * This event signifies a user has submitted their shipping information.
+     */
+    protected $name = 'add_shipping_info';
 
     public function __construct()
     {

@@ -6,15 +6,17 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
 
 abstract class Event implements EventInterface
 {
-    protected string $name;
+    /** @var string */
+    protected $name;
 
-    public EventParametersInterface $parameters;
+    /** @var EventParametersInterface|null */
+    public $parameters;
 
     public function toArray(): array
     {
         $arr = ['name' => $this->name];
 
-        if (isset($this->parameters)) {
+        if (null !== $this->parameters) {
             $arr['params'] = $this->parameters->toArray();
         }
 

@@ -4,14 +4,39 @@ declare(strict_types=1);
 
 namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
 
-use PHPUnit\Framework\TestCase;
-
-final class RefundEventTest extends TestCase
+final class RefundEventTest extends EventTestCase
 {
     /**
      * @test
+     * @dataProvider exampleEventProvider
      */
-    public function it_returns_array(): void
+    public function it_returns_array(EventInterface $event): void
+    {
+        self::assertSame([
+            'name' => 'refund',
+            'params' => [
+                'affiliation' => 'Google Store',
+                'coupon' => 'SUMMER_FUN',
+                'currency' => 'USD',
+                'transaction_id' => 'T_12345',
+                'shipping' => 3.33,
+                'tax' => 1.11,
+                'value' => 12.21,
+                'items' => [['item_id' => 'SKU_12345']],
+            ],
+        ], $event->toArray());
+    }
+
+    /**
+     * @test
+     * @dataProvider exampleEventProvider
+     */
+    public function it_yields_a_valid_request(EventInterface $event): void
+    {
+        $this->assertValidRequest($event);
+    }
+
+    public function exampleEventProvider(): iterable
     {
         $event = new RefundEvent();
         $event->parameters->affiliation = 'Google Store';
@@ -27,18 +52,6 @@ final class RefundEventTest extends TestCase
 
         $event->parameters->addItem($item);
 
-        self::assertSame([
-            'name' => 'refund',
-            'params' => [
-                'affiliation' => 'Google Store',
-                'coupon' => 'SUMMER_FUN',
-                'currency' => 'USD',
-                'transaction_id' => 'T_12345',
-                'shipping' => 3.33,
-                'tax' => 1.11,
-                'value' => 12.21,
-                'items' => [['item_id' => 'SKU_12345']],
-            ],
-        ], $event->toArray());
+        return [[$event]];
     }
 }

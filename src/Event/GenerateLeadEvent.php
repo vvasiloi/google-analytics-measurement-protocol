@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class GenerateLeadEvent extends Event
 {
-    /** Log this event when a lead has been generated to understand the efficacy of your re-engagement campaigns. */
-    protected string $name = 'generate_lead';
+    /**
+     * @var string
+     * Log this event when a lead has been generated to understand the efficacy of your re-engagement campaigns.
+     */
+    protected $name = 'generate_lead';
 
     public function __construct()
     {

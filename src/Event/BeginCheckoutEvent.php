@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class BeginCheckoutEvent extends Event
 {
-    /** This event signifies that a user has begun a checkout. */
-    protected string $name = 'begin_checkout';
+    /**
+     * @var string
+     * This event signifies that a user has begun a checkout.
+     */
+    protected $name = 'begin_checkout';
 
     public function __construct()
     {

@@ -7,9 +7,10 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
 final class SignUpEventParameters extends EventParameters
 {
     /**
+     * @var string
      * The method used for sign up.
      * Required: No
      * Example: Google
      */
-    public string $method;
+    public $method;
 }

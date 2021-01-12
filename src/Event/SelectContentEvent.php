@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class SelectContentEvent extends Event
 {
-    /** This event signifies that a user has selected some content of a certain type. This event can help you identify popular content and categories of content in your app. */
-    protected string $name = 'select_content';
+    /**
+     * @var string
+     * This event signifies that a user has selected some content of a certain type. This event can help you identify popular content and categories of content in your app.
+     */
+    protected $name = 'select_content';
 
     public function __construct()
     {

@@ -9,16 +9,18 @@ final class RemoveFromCartEventParameters extends EventParameters implements Ite
     use ItemsAwareEventParametersTrait;
 
     /**
+     * @var string
      * Currency of the items associated with the event, in 3-letter ISO 4217 format.
      * Required: No
      * Example: USD
      */
-    public string $currency;
+    public $currency;
 
     /**
+     * @var float
      * The monetary value of the event.
      * Required: No
      * Example: 7.77
      */
-    public float $value;
+    public $value;
 }

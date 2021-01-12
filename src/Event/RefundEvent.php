@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class RefundEvent extends Event
 {
-    /** This event signifies a refund was issued. */
-    protected string $name = 'refund';
+    /**
+     * @var string
+     * This event signifies a refund was issued.
+     */
+    protected $name = 'refund';
 
     public function __construct()
     {

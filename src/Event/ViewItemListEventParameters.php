@@ -9,16 +9,18 @@ final class ViewItemListEventParameters extends EventParameters implements Items
     use ItemsAwareEventParametersTrait;
 
     /**
+     * @var string
      * The name of the list in which the item was presented to the user.
      * Required: No
      * Example: Related products
      */
-    public string $itemListName;
+    public $itemListName;
 
     /**
+     * @var string
      * The ID of the list in which the item was presented to the user.
      * Required: No
      * Example: related_products
      */
-    public string $itemListId;
+    public $itemListId;
 }

@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class SearchEvent extends Event
 {
-    /** Use this event to contextualize search operations. This event can help you identify the most popular content in your app. */
-    protected string $name = 'search';
+    /**
+     * @var string
+     * Use this event to contextualize search operations. This event can help you identify the most popular content in your app.
+     */
+    protected $name = 'search';
 
     public function __construct()
     {

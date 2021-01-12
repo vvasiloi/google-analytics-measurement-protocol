@@ -6,25 +6,36 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
 
 class GenericItemEventParameters extends EventParameters
 {
-    public string $itemId;
+    /** @var string */
+    public $itemId;
 
-    public string $itemName;
+    /** @var string */
+    public $itemName;
 
-    public string $affiliation;
+    /** @var string */
+    public $affiliation;
 
-    public string $coupon;
+    /** @var string */
+    public $coupon;
 
-    public float $discount;
+    /** @var float */
+    public $discount;
 
-    public string $itemBrand;
+    /** @var string */
+    public $itemBrand;
 
-    public string $itemCategory;
+    /** @var string */
+    public $itemCategory;
 
-    public string $itemVariant;
+    /** @var string */
+    public $itemVariant;
 
-    public float $tax;
+    /** @var float */
+    public $tax;
 
-    public float $price;
+    /** @var float */
+    public $price;
 
-    public string $currency;
+    /** @var string */
+    public $currency;
 }

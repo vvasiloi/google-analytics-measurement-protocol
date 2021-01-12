@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class SelectPromotionEvent extends Event
 {
-    /** This event signifies an promotion was selected from a list. */
-    protected string $name = 'select_promotion';
+    /**
+     * @var string
+     * This event signifies an promotion was selected from a list.
+     */
+    protected $name = 'select_promotion';
 
     public function __construct()
     {

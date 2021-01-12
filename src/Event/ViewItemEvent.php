@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class ViewItemEvent extends Event
 {
-    /** This event signifies that some content was shown to the user. Use this event to discover the most popular items viewed. */
-    protected string $name = 'view_item';
+    /**
+     * @var string
+     * This event signifies that some content was shown to the user. Use this event to discover the most popular items viewed.
+     */
+    protected $name = 'view_item';
 
     public function __construct()
     {

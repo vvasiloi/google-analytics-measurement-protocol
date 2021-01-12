@@ -9,8 +9,11 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
  */
 final class EarnVirtualCurrencyEvent extends Event
 {
-    /** This event measures the awarding of virtual currency. Log this along with spend_virtual_currency to better understand your virtual economy. */
-    protected string $name = 'earn_virtual_currency';
+    /**
+     * @var string
+     * This event measures the awarding of virtual currency. Log this along with spend_virtual_currency to better understand your virtual economy.
+     */
+    protected $name = 'earn_virtual_currency';
 
     public function __construct()
     {

@@ -9,9 +9,10 @@ final class ViewSearchResultsEventParameters extends EventParameters implements 
     use ItemsAwareEventParametersTrait;
 
     /**
+     * @var string
      * The term used for the search.
      * Required: No
      * Example: Clothing
      */
-    public string $searchTerm;
+    public $searchTerm;
 }
