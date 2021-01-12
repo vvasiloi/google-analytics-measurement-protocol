@@ -13,8 +13,8 @@ use Setono\GoogleAnalyticsMeasurementProtocol\Event\EventParameters;
 use Setono\GoogleAnalyticsMeasurementProtocol\Event\EventTestCase;
 use Setono\GoogleAnalyticsMeasurementProtocol\Event\ItemsAwareEventParametersInterface;
 use Setono\GoogleAnalyticsMeasurementProtocol\Event\ItemsAwareEventParametersTrait;
+use Stringizer\Stringizer;
 use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\String\UnicodeString;
 
 require_once 'vendor/autoload.php';
 
@@ -25,8 +25,8 @@ $eventTestDir = str_replace('src', 'tests', $eventDir);
 $events = get_events();
 
 foreach ($events as $event) {
-    $eventName = new UnicodeString($event['name']);
-    $eventClassName = sprintf('%sEvent', $eventName->camel()->title()->toString());
+    $eventName = new Stringizer($event['name']);
+    $eventClassName = sprintf('%sEvent', $eventName->camelize()->uppercaseFirst(true)->getString());
 
     generate_event_class($event, $eventClassName, $eventNamespace, $eventDir);
 
@@ -123,7 +123,7 @@ function generate_event_parameters_class(array $event, string $className, string
             $class->addImplement(ItemsAwareEventParametersInterface::class);
             $class->addTrait(ItemsAwareEventParametersTrait::class);
         } else {
-            $property = $class->addProperty((new UnicodeString($param['0']))->camel()->toString());
+            $property = $class->addProperty((new Stringizer($param['0']))->camelize()->getString());
             $property->setPublic();
 //            $property->setType(get_type($param));
             $property->addComment(sprintf('@var %s', get_type($param)));
@@ -164,19 +164,19 @@ function generate_event_test_class(array $event, string $eventClassName, string 
 
     $providerMethod = $class->addMethod('exampleEventProvider');
     $providerMethod->setReturnType('iterable');
-    $providerMethod->addBody("\$event = new ?();", [new Literal($eventClassName)]);
+    $providerMethod->addBody('$event = new ?();', [new Literal($eventClassName)]);
 
     $assert = [
         'name' => $event['name'],
     ];
     $itemsCodeFragment = '';
-    $dumper = new Nette\PhpGenerator\Dumper;
+    $dumper = new Nette\PhpGenerator\Dumper();
 
     if (isset($event['params'])) {
         $assert['params'] = [];
 
         foreach ($event['params'] as $param) {
-            $propertyName = (new UnicodeString($param['0']))->camel()->toString();
+            $propertyName = (new Stringizer($param['0']))->camelize()->getString();
 
             if ($propertyName === 'items') {
                 $itemsCodeFragment = $dumper->format("\$item = new GenericItemEventParameters();\n") .
@@ -189,12 +189,12 @@ function generate_event_test_class(array $event, string $eventClassName, string 
             $type = get_type($param);
 
             if ($type === 'int' || $type === 'float') {
-                $assert['params'][$param[0]] = ($type === 'float' ? (float)$param[3] : (int)$param[3]);
+                $assert['params'][$param[0]] = ($type === 'float' ? (float) $param[3] : (int) $param[3]);
             } else {
                 $assert['params'][$param[0]] = $param[3];
             }
 
-            $providerMethod->addBody("\$event->parameters->? = ?;", [$propertyName, $assert['params'][$param[0]]]);
+            $providerMethod->addBody('$event->parameters->? = ?;', [$propertyName, $assert['params'][$param[0]]]);
         }
 
         if ($itemsCodeFragment !== '') {
@@ -228,5 +228,5 @@ function get_type(array $param): ?string
 
 function write_file(string $dir, string $name, PhpFile $file): void
 {
-    file_put_contents(FileSystem::joinPaths($dir, $name . '.php'), (new Nette\PhpGenerator\PsrPrinter)->printFile($file));
+    file_put_contents(FileSystem::joinPaths($dir, $name . '.php'), (new Nette\PhpGenerator\PsrPrinter())->printFile($file));
 }

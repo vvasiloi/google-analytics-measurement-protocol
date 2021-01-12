@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": "^7.2",
-        "symfony/string": "^5.0"
+        "jasonlam604/stringizer": "^2.14.0"
     },
     "require-dev": {
         "fabpot/goutte": "^4.0",

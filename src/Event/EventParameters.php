@@ -6,7 +6,7 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol\Event;
 
 use ReflectionClass;
 use ReflectionProperty;
-use Symfony\Component\String\UnicodeString;
+use Stringizer\Transformers\CamelToSnake;
 
 abstract class EventParameters implements EventParametersInterface
 {
@@ -18,7 +18,7 @@ abstract class EventParameters implements EventParametersInterface
         $properties = $reflectionClass->getProperties(ReflectionProperty::IS_PUBLIC);
 
         foreach ($properties as $property) {
-            $propertyName = new UnicodeString($property->getName());
+            $propertyName = $property->getName();
             if (!isset($this->{$propertyName})) {
                 continue;
             }
@@ -37,7 +37,7 @@ abstract class EventParameters implements EventParametersInterface
             }
 
             /** @psalm-suppress MixedAssignment */
-            $arr[(string) $propertyName->snake()] = $value;
+            $arr[(string) (new CamelToSnake($propertyName))->execute()] = $value;
         }
 
         return $arr;
