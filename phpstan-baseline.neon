@@ -1,6 +1,2 @@
 parameters:
 	ignoreErrors:
-		-
-			message: "#^Variable property access on \\$this\\(Setono\\\\GoogleAnalyticsMeasurementProtocol\\\\Event\\\\EventParameters\\)\\.$#"
-			count: 2
-			path: src/Event/EventParameters.php

@@ -19,12 +19,14 @@ abstract class Parameters implements ParametersInterface
 
         foreach ($properties as $property) {
             $propertyName = $property->getName();
-            if (!isset($this->{$propertyName})) {
+            /* TODO: for PHP 7.4 and up
+            if (!$property->isInitialized($this)) {
                 continue;
-            }
+            }*/
 
-            /** @var mixed $value */
-            $value = $this->{$propertyName};
+            /** @psalm-suppress MixedAssignment */
+            $value = $property->getValue($this);
+
             if (is_array($value)) {
                 $res = [];
 
