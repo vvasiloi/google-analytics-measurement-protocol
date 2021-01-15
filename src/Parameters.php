@@ -38,8 +38,11 @@ abstract class Parameters implements ParametersInterface
                 $value = $res;
             }
 
-            /** @psalm-suppress MixedAssignment */
-            $arr[(string) (new CamelToSnake($propertyName))->execute()] = $value;
+            // TODO: remove this check when the above check for PHP 7.4 and up is used
+            if ($value !== null) {
+                /** @psalm-suppress MixedAssignment */
+                $arr[(string) (new CamelToSnake($propertyName))->execute()] = $value;
+            }
         }
 
         return $arr;
