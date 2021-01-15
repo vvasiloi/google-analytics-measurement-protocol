@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Setono\GoogleAnalyticsMeasurementProtocol;
 
-class Aggregate
+class Aggregate implements AggregateInterface
 {
     /** @var string */
-    public $clientId;
+    protected $clientId;
+
+    /** @var string */
+    protected $userId;
 
     /** @var EventInterface[] */
-    public $events;
+    protected $events;
 
     public function __construct(string $clientId, EventInterface ...$events)
     {
@@ -21,6 +24,11 @@ class Aggregate
     public function getClientId(): string
     {
         return $this->clientId;
+    }
+
+    public function getUserId(): ?string
+    {
+        return $this->userId;
     }
 
     public function getEvents(): array
@@ -37,11 +45,17 @@ class Aggregate
     {
         $events = array_map(static function (EventInterface $event): array {
             return $event->toArray();
-        }, $this->events);
+        }, $this->getEvents());
 
-        return [
-            'client_id' => $this->clientId,
+        $data = [
+            'client_id' => $this->getClientId(),
             'events' => $events,
         ];
+
+        if (null !== $this->getUserId()) {
+            $data['user_id'] = $this->getUserId();
+        }
+
+        return $data;
     }
 }

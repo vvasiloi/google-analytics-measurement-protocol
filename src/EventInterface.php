@@ -6,5 +6,7 @@ namespace Setono\GoogleAnalyticsMeasurementProtocol;
 
 interface EventInterface
 {
+    public function getName(): string;
+
     public function toArray(): array;
 }

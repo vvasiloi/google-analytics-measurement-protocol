@@ -12,6 +12,11 @@ abstract class Event implements EventInterface
     /** @var ParametersInterface|null */
     public $parameters;
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     public function toArray(): array
     {
         $arr = ['name' => $this->name];
